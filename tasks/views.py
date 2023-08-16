@@ -2,6 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import (CreateView, DeleteView, ListView,
                                   TemplateView, UpdateView)
+from django.shortcuts import redirect
 
 from common.mixins import AffiliationMixin, TitleMixin
 
@@ -35,6 +36,23 @@ class EditTaskView(TitleMixin, LoginRequiredMixin, AffiliationMixin, UpdateView)
     success_url = reverse_lazy('tasks:task_list')
     template_name = 'tasks/edit-task.html'
     title = 'DT - Изменить задание'
+
+    def post(self, request, *args, **kwargs):
+        stage = int(request.POST.get('stage'))
+        task = Tasks.objects.get(id=self.kwargs.get('pk'))
+
+        if not task.completed:
+            if stage == 2:
+                task.completed = True
+                task.save()
+
+                user = request.user
+                user.number_of_completed_tasks += 1
+                user.save()
+
+            return super().post(request, *args, **kwargs)
+
+        return redirect('/tasks/task-list')
 
 
 class DeleteTaskView(AffiliationMixin, DeleteView):
