@@ -43,6 +43,8 @@
                                 <div id="brdr">
                                     <form method="post">
                                         {% csrf_token %}
+
+                                        {% if not tasks.completed %}
                                         <div class="form-floating my-4">
                                             {{ form.task }}
                                             <label for="{{ form.task.id_for_label }}">Название</label>
@@ -61,15 +63,21 @@
                                         <div class="form-floating my-4">
                                             {{ form.stage }}
                                         </div>
+                                         {% else %}
+                                        <p style="text-align: center;">Невозможно изменить задание после его выполнения</p>
+                                        {% endif %}
 
                                         <a type="submit" class="btn custom-btn form-control mt-4 mb-3"
                                         href="{% url 'tasks:delete_task' tasks.id %}">
                                             Удалить задание
                                         </a>
 
+                                        {% if not tasks.completed %}
                                         <button type="submit" class="btn custom-btn form-control mt-4 mb-3">
                                             Изменить
                                         </button>
+                                        {% endif %}
+
                                     </form>
                                 </div>
                             </div>
