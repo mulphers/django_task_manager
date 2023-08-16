@@ -60,6 +60,13 @@ class DeleteTaskView(AffiliationMixin, DeleteView):
     success_url = reverse_lazy('tasks:task_list')
 
     def get(self, request, *args, **kwargs):
+        task = Tasks.objects.get(id=self.kwargs.get('pk'))
+
+        if task.completed:
+            user = request.user
+            user.number_of_completed_tasks -= 1
+            user.save()
+
         return self.delete(request, *args, **kwargs)
 
 
