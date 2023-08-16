@@ -19,6 +19,7 @@ class Tasks(models.Model):
     stage = models.PositiveSmallIntegerField(default=EXPECTATION, choices=STAGE_CHOICE)
     created = models.DateTimeField(auto_now_add=True)
     completed = models.BooleanField(default=False)
+    check = models.BooleanField(default=False)
     user = models.ForeignKey(to=Users, on_delete=models.CASCADE)
 
     class Meta:
