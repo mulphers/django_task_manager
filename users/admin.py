@@ -7,7 +7,7 @@ from users.models import EmailVerifications, Users
 class TasksInLine(admin.StackedInline):
     model = Tasks
     fields = ('task', 'short_description', 'stage', 'created', 'completed')
-    readonly_fields = ('created',)
+    readonly_fields = ('stage', 'created')
     extra = 0
 
 
