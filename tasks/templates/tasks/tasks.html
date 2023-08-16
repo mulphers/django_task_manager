@@ -1,0 +1,83 @@
+{% extends 'tasks/base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'css/bootstrap-icons.css' %}" rel="stylesheet">
+
+<link rel="stylesheet" href="{% static 'css/slick.css' %}"/>
+
+<link href="{% static 'css/tooplate-little-fashion.css' %}" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/tasks.css' %}">
+{% endblock %}
+
+{% block section %}
+<section class="preloader">
+    <div class="spinner">
+        <span class="sk-inner-circle"></span>
+    </div>
+</section>
+{% endblock %}
+
+{% block main %}
+<main>
+    <section>
+        <div class="container pt-5">
+            <div class="text-center mt-5">
+                <h1>Задания на день</h1>
+                <div class="orders mt-5">
+                    <table class="table">
+                        <thead>
+                        <tr class="table-light">
+                            <th scope="col">Название</th>
+                            <th scope="col">Краткое описание</th>
+                            <th scope="col">Дата создания</th>
+                            <th scope="col">Статус</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for task in object_list %}
+                        <tr bgcolor="{% if task.stage == 1 %}#FFDAB9{% elif task.stage == 2 %}#FFA07A{% endif %}">
+                            <th scope="row">{{ task.task }}</th>
+                            <td>{{ task.short_description }}</td>
+                            <td>{{ task.created }}</td>
+                            <td>
+                                <a href="{% url 'tasks:edit_task' task.id %}">{{ task.get_stage_display }}</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <form method="post">
+        <div class="container-buttons">
+            <a type="submit" class="btn custom-btn form-control mt-4 mb-3" id="btn1" href="{% url 'tasks:add_task' %}">
+                Добавить задание
+            </a>
+        </div>
+    </form>
+
+    <div class="pagination">
+        <p id="pg-p">
+            <a href="#">&laquo;</a>
+            <a class="active" href="#">1</a>
+            <a href="#">2</a>
+            <a href="#">&raquo;</a>
+        </p>
+    </div>
+
+    <br>
+</main>
+{% endblock %}

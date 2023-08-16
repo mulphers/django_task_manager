@@ -1,0 +1,80 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{ title }}</title>
+
+    {% block css %} {% endblock %}
+
+</head>
+
+<body>
+
+{% block section %} {% endblock %}
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <a class="navbar-brand" href="{% url 'index' %}">
+            <strong><span>Daily</span> Tasks</strong>
+        </a>
+
+        <div class="d-lg-none">
+            <a href="sign-in.html" class="bi-person custom-icon me-3"></a>
+
+            <a href="product-detail.html" class="bi-bag custom-icon"></a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbarNav" style="padding-left: 1113px;">
+
+
+            <div class="d-none d-lg-block">
+                {% if not user.is_authenticated %}
+                <a href="{% url 'user:sign_in' %}" class="bi-person custom-icon me-3"></a>
+                {% else %}
+                <a href="{% url 'user:profile' user.id %}" class="bi-person custom-icon me-3"></a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+
+{% block main %} {% endblock %}
+
+<footer class="site-footer">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-3 col-10 me-auto mb-4">
+                <h4 class="text-white mb-3"><a href="{% url 'index' %}">Daily Tasks</a></h4>
+                <p class="copyright-text text-muted mt-lg-5 mb-4 mb-lg-0">Copyright © 2022 <strong>Daily
+                    Tasks</strong></p>
+                <br>
+                <p class="copyright-text">Designed by <a href="https://www.tooplate.com/" target="_blank">Tooplate</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- JAVASCRIPT FILES -->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/Headroom.js' %}"></script>
+<script src="{% static 'js/jQuery.headroom.js' %}"></script>
+<script src="{% static 'js/slick.min.js' %}"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+
+</body>
+</html>

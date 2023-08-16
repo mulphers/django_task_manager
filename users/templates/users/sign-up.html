@@ -1,0 +1,114 @@
+{% extends 'tasks/base.html' %}
+{% load static %}
+
+{% block css %}
+<!-- CSS FILES -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'css/bootstrap-icons.css' %}" rel="stylesheet">
+
+<link rel="stylesheet" href="{% static 'css/slick.css' %}"/>
+
+<link href="{% static 'css/tooplate-little-fashion.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block section %}
+<section class="preloader">
+    <div class="spinner">
+        <span class="sk-inner-circle"></span>
+    </div>
+</section>
+{% endblock %}
+
+{% block main %}
+<main>
+    <section class="sign-in-form section-padding">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-8 mx-auto col-12">
+
+                    <h1 class="hero-title text-center mb-5">Регистрация</h1>
+
+                    <div class="social-login d-flex flex-column w-50 m-auto">
+
+                        <a href="#" class="btn custom-btn social-btn mb-4">
+                            <i class="bi bi-google me-3"></i>
+
+                            Continue with Google
+                        </a>
+
+                        <a href="#" class="btn custom-btn social-btn">
+                            <i class="bi bi-facebook me-3"></i>
+
+                            Continue with Facebook
+                        </a>
+                    </div>
+
+                    <div class="div-separator w-50 m-auto my-5"><span>Или</span></div>
+
+                    {% if form.errors %}
+                    {% for error in form.get_error_text %}
+                    <h6 class="hero-title text-center mb-5" style="font-size: 15px;">{{ error }}</h6>
+                    {% endfor %}
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-lg-8 col-11 mx-auto">
+                            <form role="form" method="post">
+                                {% csrf_token %}
+
+                                <div class="form-floating my-4">
+                                    {{ form.first_name }}
+                                    <label for="{{ form.first_name.id_for_label }}">Имя</label>
+                                </div>
+
+                                <div class="form-floating my-4">
+                                    {{ form.last_name }}
+                                    <label for="{{ form.last_name.id_for_label }}">Фамилия</label>
+                                </div>
+
+                                <div class="form-floating my-4">
+                                    {{ form.username }}
+                                    <label for="{{ form.username.id_for_label }}">Логин</label>
+                                </div>
+
+                                <div class="form-floating">
+                                    {{ form.email }}
+                                    <label for="{{ form.email.id_for_label }}">Электронная почта</label>
+                                </div>
+
+                                <div class="form-floating my-4">
+                                    {{ form.password1 }}
+                                    <label for="{{ form.password1.id_for_label }}">Пароль</label>
+                                </div>
+
+                                <div class="form-floating">
+                                    {{ form.password2 }}
+                                    <label for="{{ form.password2.id_for_label }}">Повторите пароль</label>
+                                </div>
+
+                                <button type="submit" class="btn custom-btn form-control mt-4 mb-3">
+                                    Создать аккаунт
+                                </button>
+
+                                <p class="text-center">У вас уже есть аккаунт? Пожалуйста <a
+                                        href="{% url 'user:sign_in' %}">войдите</a>
+                                </p>
+
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

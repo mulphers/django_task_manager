@@ -1,0 +1,85 @@
+{% extends 'tasks/base.html' %}
+{% load static %}
+
+{% block css %}
+<!-- CSS FILES -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'css/bootstrap-icons.css' %}" rel="stylesheet">
+
+<link rel="stylesheet" href="{% static 'css/slick.css' %}"/>
+
+<link href="{% static 'css/tooplate-little-fashion.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block section %}
+<section class="preloader">
+    <div class="spinner">
+        <span class="sk-inner-circle"></span>
+    </div>
+</section>
+{% endblock %}
+
+{% block main %}
+<main>
+    <section class="slick-slideshow">
+        <div class="slick-custom">
+            <img src="{% static 'images/slideshow/medium-shot-business-women-high-five.jpeg' %}" class="img-fluid"
+                 alt="">
+
+            <div class="slick-bottom">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 col-10">
+                            <h1 class="slick-title">Ключ к успеху?</h1>
+
+                            <p class="lead text-white mt-lg-3 mb-lg-5">Планирование и активное выполнение!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slick-custom">
+            <img src="{% static 'images/slideshow/team-meeting-renewable-energy-project.jpeg' %}" class="img-fluid"
+                 alt="">
+
+            <div class="slick-bottom">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 col-10">
+                            <h1 class="slick-title">Не медли!</h1>
+
+                            <p class="lead text-white mt-lg-3 mb-lg-5">Планируй и превзойди ожидания! Будь #1!</p>>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slick-custom">
+            <img src="{% static 'images/slideshow/two-business-partners-working-together-office-computer.jpeg' %}"
+                 class="img-fluid"
+                 alt="">
+
+            <div class="slick-bottom">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 col-10">
+                            <h1 class="slick-title">План + действие = успех.</h1>
+
+                            <p class="lead text-white mt-lg-3 mb-lg-5">Мы знаем, как это сделать!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</main>
+{% endblock %}
