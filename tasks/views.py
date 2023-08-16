@@ -1,10 +1,14 @@
+from datetime import date
+
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import (CreateView, DeleteView, ListView,
                                   TemplateView, UpdateView)
-from django.shortcuts import redirect
 
 from common.mixins import AffiliationMixin, TitleMixin
+from tasks.services import (check_overdue_tasks,
+                            decrease_counter_of_completed_tasks)
 
 from .forms import AddNewTaskForm, EditTaskForm
 from .models import Tasks
@@ -60,12 +64,10 @@ class DeleteTaskView(AffiliationMixin, DeleteView):
     success_url = reverse_lazy('tasks:task_list')
 
     def get(self, request, *args, **kwargs):
-        task = Tasks.objects.get(id=self.kwargs.get('pk'))
-
-        if task.completed:
-            user = request.user
-            user.number_of_completed_tasks -= 1
-            user.save()
+        decrease_counter_of_completed_tasks(
+            user=self.request.user,
+            task=Tasks.objects.get(id=self.kwargs.get('pk'))
+        )
 
         return self.delete(request, *args, **kwargs)
 
@@ -75,4 +77,6 @@ class TaskListView(TitleMixin, LoginRequiredMixin, ListView):
     title = 'DT - Задания на день'
 
     def get_queryset(self):
-        return Tasks.objects.filter(user=self.request.user)
+        check_overdue_tasks(user=self.request.user)
+
+        return Tasks.objects.filter(user=self.request.user, created__date=date.today())
