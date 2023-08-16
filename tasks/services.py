@@ -1,6 +1,6 @@
-from tasks.models import Tasks
-
 from datetime import date
+
+from .models import Tasks
 
 
 def check_overdue_tasks(user):
