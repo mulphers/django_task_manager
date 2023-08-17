@@ -8,7 +8,6 @@ def check_overdue_tasks(user):
         user=user,
         created__date__lt=date.today(),
         completed=False,
-        check=False
     )
 
     if overdue_tasks.exists():
