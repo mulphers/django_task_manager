@@ -86,6 +86,9 @@
                                            required>
 
                                     <label for="email">Электронная почта</label>
+                                    {% if not user.email_verified %}
+                                    <p style="font-size:15px">* адрес электронной почты не подтвержден</p>
+                                    {% endif %}
                                 </div>
 
                                 {{ form.image }}
