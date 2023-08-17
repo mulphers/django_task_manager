@@ -15,9 +15,7 @@ def check_overdue_tasks(user):
         user.number_of_overdue_tasks += len(overdue_tasks)
         user.save()
 
-        for obj in overdue_tasks:
-            obj.check = True
-            obj.save()
+        overdue_tasks.delete()
 
 
 def decrease_counter_of_completed_tasks(user, task):
