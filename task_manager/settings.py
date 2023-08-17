@@ -15,7 +15,13 @@ from pathlib import Path
 import environ
 
 env = environ.Env(
-    SECRET_KEY=str
+    SECRET_KEY=str,
+
+    EMAIL_HOST=str,
+    EMAIL_PORT=int,
+    EMAIL_USE_SSL=bool,
+    EMAIL_HOST_USER=str,
+    EMAIL_HOST_PASSWORD=str
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -146,3 +152,13 @@ AUTH_USER_MODEL = 'users.Users'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/user/sign-in/'
 LOGOUT_REDIRECT_URL = '/'
+
+# Email
+
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_PORT = env('EMAIL_PORT')
+
+EMAIL_USE_SSL = env('EMAIL_USE_SSL')
+
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
