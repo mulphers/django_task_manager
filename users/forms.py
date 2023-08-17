@@ -1,8 +1,10 @@
+from uuid import uuid4
+
 from django import forms
 from django.contrib.auth.forms import (AuthenticationForm, UserChangeForm,
                                        UserCreationForm)
 
-from .models import Users
+from .models import EmailVerifications, Users
 
 
 class SignInForm(AuthenticationForm):
@@ -58,6 +60,18 @@ class SignUpForm(UserCreationForm):
 
     def get_errors_values(self):
         return (error for error in self.errors.values())
+
+    def save(self, commit=True):
+        user = super().save(commit=commit)
+
+        record = EmailVerifications.objects.create(
+            code=uuid4(),
+            user=user
+        )
+
+        record.send_verification_email()
+
+        return user
 
 
 class ProfileUpdateForm(UserChangeForm):
