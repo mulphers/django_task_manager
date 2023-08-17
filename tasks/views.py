@@ -7,11 +7,12 @@ from django.views.generic import (CreateView, DeleteView, ListView,
                                   TemplateView, UpdateView)
 
 from common.mixins import AffiliationMixin, TitleMixin
-from tasks.services import (check_overdue_tasks,
-                            decrease_counter_of_completed_tasks)
 
 from .forms import AddNewTaskForm, EditTaskForm
 from .models import Tasks
+from .services import (check_overdue_tasks,
+                       decrease_counter_of_completed_tasks,
+                       increase_counter_of_completed_tasks)
 
 
 class IndexView(TitleMixin, TemplateView):
@@ -46,13 +47,11 @@ class EditTaskView(TitleMixin, LoginRequiredMixin, AffiliationMixin, UpdateView)
         task = Tasks.objects.get(id=self.kwargs.get('pk'))
 
         if not task.completed:
-            if stage == 2:
-                task.completed = True
-                task.save()
-
-                user = request.user
-                user.number_of_completed_tasks += 1
-                user.save()
+            increase_counter_of_completed_tasks(
+                stage=stage,
+                user=request.user,
+                task=task
+            )
 
             return super().post(request, *args, **kwargs)
 
