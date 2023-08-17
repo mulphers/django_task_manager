@@ -1,5 +1,8 @@
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
+from django.core.mail import send_mail
 from django.db import models
+from django.urls import reverse_lazy
 
 
 class Users(AbstractUser):
@@ -17,8 +20,8 @@ class Users(AbstractUser):
         if not value:
             return 0
 
-        coefficient = sum(
-            (self.number_of_completed_tasks, self.number_of_overdue_tasks)) / value
+        coefficient = sum((self.number_of_completed_tasks,
+                           self.number_of_overdue_tasks)) / value
 
         return int(100 / coefficient)
 
@@ -37,3 +40,22 @@ class EmailVerifications(models.Model):
 
     def __str__(self):
         return f'Подтверждение для пользователя {self.user.username}'
+
+    def send_verification_email(self):
+        link = reverse_lazy('users:verify', kwargs={
+            'email': self.user.email,
+            'code': self.code
+        })
+        verification_link = f'{settings.DOMAIN_NAME}{link}'
+
+        subject = 'Daily Tasks - Подтверждение адреса электронной почты'
+        message = 'Спасибо за регистрацию!\n\nДля подтверждения адреса электронной' \
+                  ' почты перейдите по ссылке:\n {}'.format(verification_link)
+
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[self.user.email],
+            fail_silently=False
+        )
