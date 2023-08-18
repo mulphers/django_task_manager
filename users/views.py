@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import (LoginView, PasswordResetConfirmView,
+                                       PasswordResetView)
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import View
@@ -7,7 +9,8 @@ from django.views.generic.edit import CreateView, UpdateView
 
 from common.mixins import LogoutRequiredMixin, TitleMixin
 
-from .forms import ProfileUpdateForm, SignInForm, SignUpForm
+from .forms import (ChangePasswordForm, ProfileUpdateForm, SignInForm,
+                    SignUpForm)
 from .models import Users
 from .services import email_confirmation_check
 
@@ -48,3 +51,19 @@ class EmailVerifiedView(View):
         )
 
         return redirect('/')
+
+
+class PasswordRecoveryView(TitleMixin, LogoutRequiredMixin, PasswordResetView):
+    email_template_name = 'users/email_template.html'
+    subject_template_name = 'users/subject_template.txt'
+    template_name = 'users/password_recovery.html'
+    title = 'DT - Восстановить пароль'
+    success_url = reverse_lazy('users:sign_in')
+    from_email = settings.EMAIL_HOST_USER
+
+
+class ChangePasswordView(TitleMixin, LogoutRequiredMixin, PasswordResetConfirmView):
+    template_name = 'users/change_password.html'
+    title = 'DT - Изменить пароль'
+    success_url = reverse_lazy('users:change')
+    form_class = ChangePasswordForm
