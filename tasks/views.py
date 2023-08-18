@@ -11,7 +11,7 @@ from common.mixins import AffiliationMixin, TitleMixin
 from .forms import AddNewTaskForm, EditTaskForm
 from .models import Tasks
 from .services import (check_overdue_tasks,
-                       decrease_counter_of_completed_tasks,
+                       decrease_counter_of_completed_tasks, delete_old_tasks,
                        increase_counter_of_completed_tasks)
 
 
@@ -43,16 +43,13 @@ class EditTaskView(TitleMixin, LoginRequiredMixin, AffiliationMixin, UpdateView)
     title = 'DT - Изменить задание'
 
     def post(self, request, *args, **kwargs):
-        stage = int(request.POST.get('stage'))
-        task = Tasks.objects.get(id=self.kwargs.get('pk'))
+        result = increase_counter_of_completed_tasks(
+            stage=int(request.POST.get('stage')),
+            user=request.user,
+            task=Tasks.objects.get(id=self.kwargs.get('pk'))
+        )
 
-        if not task.completed:
-            increase_counter_of_completed_tasks(
-                stage=stage,
-                user=request.user,
-                task=task
-            )
-
+        if result:
             return super().post(request, *args, **kwargs)
 
         return redirect('/tasks/task-list')
@@ -77,5 +74,6 @@ class TaskListView(TitleMixin, LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         check_overdue_tasks(user=self.request.user)
+        delete_old_tasks(user=self.request.user)
 
         return Tasks.objects.filter(user=self.request.user, created__date=date.today())
