@@ -17,13 +17,28 @@ def check_overdue_tasks(user):
         overdue_tasks.delete()
 
 
-def increase_counter_of_completed_tasks(stage, user, task):
-    if stage == 2:
-        task.completed = True
-        task.save()
+def delete_old_tasks(user):
+    tasks = Tasks.objects.filter(
+        user=user,
+        created__date__lt=date.today()
+    )
 
-        user.number_of_completed_tasks += 1
-        user.save()
+    if tasks.exists():
+        tasks.delete()
+
+
+def increase_counter_of_completed_tasks(stage, user, task):
+    if not task.completed:
+        if stage == 2:
+            task.completed = True
+            task.save()
+
+            user.number_of_completed_tasks += 1
+            user.save()
+
+        return True
+
+    return False
 
 
 def decrease_counter_of_completed_tasks(user, task):
