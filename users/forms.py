@@ -1,8 +1,8 @@
 from uuid import uuid4
 
 from django import forms
-from django.contrib.auth.forms import (AuthenticationForm, UserChangeForm,
-                                       UserCreationForm)
+from django.contrib.auth.forms import (AuthenticationForm, SetPasswordForm,
+                                       UserChangeForm, UserCreationForm)
 
 from .models import EmailVerifications, Users
 
@@ -94,3 +94,15 @@ class ProfileUpdateForm(UserChangeForm):
     class Meta:
         model = Users
         fields = ('first_name', 'last_name', 'image')
+
+
+class ChangePasswordForm(SetPasswordForm):
+    new_password1 = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Пароль'
+    }))
+
+    new_password2 = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Повторите пароль'
+    }))
