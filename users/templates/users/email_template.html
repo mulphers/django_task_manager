@@ -1,0 +1,11 @@
+{% load i18n %}{% autoescape off %}
+Вы получили это письмо, потому что вы (или кто-то другой) запросили восстановление пароля от учётной записи, которая связана с этим адресом электронной почты.
+
+{% translate "Please go to the following page and choose a new password:" %}
+{% block reset_link %}
+{{ protocol }}://{{ domain }}{% url 'users:change' uidb64=uid token=token %}
+{% endblock %}
+{% translate 'Your username, in case you’ve forgotten:' %} {{ user.get_username }}
+
+{% translate "Thanks for using our site!" %}
+{% endautoescape %}

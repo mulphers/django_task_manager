@@ -53,7 +53,7 @@
                     <div class="div-separator w-50 m-auto my-5"><span>Или</span></div>
 
                     {% if form.errors %}
-                    {% for error in form.get_error_text %}
+                    {% for error in form.get_errors_values %}
                     <h6 class="hero-title text-center mb-5" style="font-size: 15px;">{{ error }}</h6>
                     {% endfor %}
                     {% endif %}
