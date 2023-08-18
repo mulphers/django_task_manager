@@ -65,5 +65,5 @@ class PasswordRecoveryView(TitleMixin, LogoutRequiredMixin, PasswordResetView):
 class ChangePasswordView(TitleMixin, LogoutRequiredMixin, PasswordResetConfirmView):
     template_name = 'users/change_password.html'
     title = 'DT - Изменить пароль'
-    success_url = reverse_lazy('users:change')
+    success_url = reverse_lazy('users:sign_in')
     form_class = ChangePasswordForm
