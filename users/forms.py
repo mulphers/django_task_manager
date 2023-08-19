@@ -5,6 +5,7 @@ from django.contrib.auth.forms import (AuthenticationForm, SetPasswordForm,
                                        UserChangeForm, UserCreationForm)
 
 from .models import EmailVerifications, Users
+from .tasks import send_email_verification
 
 
 class SignInForm(AuthenticationForm):
@@ -64,12 +65,7 @@ class SignUpForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=commit)
 
-        record = EmailVerifications.objects.create(
-            code=uuid4(),
-            user=user
-        )
-
-        record.send_verification_email()
+        send_email_verification.delay(user.id)
 
         return user
 
