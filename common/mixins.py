@@ -32,3 +32,14 @@ class AffiliationMixin(UserPassesTestMixin):
 
     def handle_no_permission(self):
         return redirect('/tasks/task-list')
+
+
+class UserCheckMixin(UserPassesTestMixin):
+    def test_func(self):
+        try:
+            return self.request.user.id == self.kwargs.get('pk')
+        except ObjectDoesNotExist:
+            return False
+
+    def handle_no_permission(self):
+        return redirect(f'/user/profile/{self.request.user.id}')

@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic.edit import CreateView, UpdateView
 
-from common.mixins import LogoutRequiredMixin, TitleMixin
+from common.mixins import LogoutRequiredMixin, TitleMixin, UserCheckMixin
 
 from .forms import (ChangePasswordForm, ProfileUpdateForm, SignInForm,
                     SignUpForm)
@@ -32,7 +32,7 @@ class SignUpView(TitleMixin, LogoutRequiredMixin, CreateView):
     success_url = reverse_lazy('user:sign_in')
 
 
-class ProfileView(TitleMixin, LoginRequiredMixin, UpdateView):
+class ProfileView(TitleMixin, LoginRequiredMixin, UserCheckMixin, UpdateView):
     template_name = 'users/profile.html'
     title = 'DT - Профиль'
     model = Users
