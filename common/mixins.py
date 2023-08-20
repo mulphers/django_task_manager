@@ -36,10 +36,10 @@ class AffiliationMixin(UserPassesTestMixin):
 
 class UserCheckMixin(UserPassesTestMixin):
     def test_func(self):
-        try:
-            return self.request.user.id == self.kwargs.get('pk')
-        except ObjectDoesNotExist:
-            return False
+        return self.request.user.id == self.kwargs.get('pk')
 
     def handle_no_permission(self):
-        return redirect(f'/user/profile/{self.request.user.id}')
+        if self.request.user.is_authenticated:
+            return redirect(f'/user/profile/{self.request.user.id}')
+
+        return redirect('/user/sign-in')
