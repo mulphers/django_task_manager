@@ -59,6 +59,8 @@ INSTALLED_APPS = [
 
     'users.apps.UsersConfig',
     'tasks.apps.TasksConfig',
+
+    'django_cleanup.apps.CleanupConfig'
 ]
 
 MIDDLEWARE = [
